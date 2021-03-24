@@ -26,11 +26,11 @@ public class Controller : ControllerBase
         try
         {
             connection.Open();
-            using var command = new SqlCommand("select count(*) from SalesLT.Product", connection);
+            using var command = new SqlCommand("SELECT * FROM DemoTable", connection);
             using var reader = command.ExecuteReader();
             reader.Read();
-            var rows = reader.GetInt32(0);
-            return new OutputData($"Successfully connected to the db, found {rows} rows", _configuration);
+            var data = reader[0];
+            return new OutputData($"Successfully connected to the db containing info for {data}", _configuration);
         }
         catch (Exception e)
         {
@@ -44,7 +44,6 @@ public class Controller : ControllerBase
             Status = status;
             DeploymentMethod = configuration["DEPLOYMENT_METHOD"] ?? "Unknown";
             ResourceGroup = configuration["WEBSITE_RESOURCE_GROUP"] ?? "Unknown";
-            Config = configuration.AsEnumerable();
         }
 
         public string CurrentDate => $"{DateTime.Now:f}";
@@ -52,6 +51,5 @@ public class Controller : ControllerBase
         public string Status { get; set; }
         public string DeploymentMethod { get; set; }
         public string ResourceGroup { get; set; }
-        public IEnumerable<System.Collections.Generic.KeyValuePair<string, string>> Config { get; set; }
     }
 }
