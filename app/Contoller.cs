@@ -43,13 +43,11 @@ public class Controller : ControllerBase
         {
             Status = status;
             DeploymentMethod = configuration["DEPLOYMENT_METHOD"] ?? "Unknown";
-            ResourceGroup = configuration["WEBSITE_RESOURCE_GROUP"] ?? "Unknown";
         }
 
         public string CurrentDate => $"{DateTime.Now:f}";
 
         public string Status { get; set; }
         public string DeploymentMethod { get; set; }
-        public string ResourceGroup { get; set; }
     }
 }
