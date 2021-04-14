@@ -33,12 +33,13 @@ _(Pre-terraformed Azure webapp & db should be available)_
   * You should delete the existing code and replace with the imported code
 > Windows users may have better success using PowerShell, if using git-bash then all commands containing resource-ids need to be prepended with `MSYS_NO_PATHCONV=1`, as per [this known issue](https://stackoverflow.com/questions/54258996/git-bash-string-parameter-with-at-start-is-being-expanded-to-a-file-path).
 
-* Now repeat that process (appending the outputted code) for each of:
+* Now repeat that process (appending the outputted code) for each of the following resource types:
   * `azure-native:web:AppServicePlan`
   * `azure-native:web:WebApp`
   * `azure-native:sql:Server`
   * `azure-native:sql:Database`
-* Replace all references to other names and ids with a reference to the other other resource e.g.:
+> Don't forget to specify appropriate variable names after the resource type
+* Replace all references to other names and ids with a reference to the other resource e.g.:
   * `resource_group_name=resource_group.name`
   * `server_name=sqlserver.name`
   * `server_farm_id=app_service_plan.id`
@@ -48,7 +49,7 @@ _(Pre-terraformed Azure webapp & db should be available)_
 We're going to use the [RandomPassword](https://www.pulumi.com/docs/reference/pkg/random/randompassword/) resource to generate a new random database password.
 * Install the provider
   * Add `pulumi-random>=3.1.1` as a new line in your `requirements.txt` file.
-  * Run `pulumi-random>=3.1.1 ./venv/Scripts/pip install -r requirements.txt` to [update the dependencies](https://www.pulumi.com/docs/intro/languages/python/#packages) in Pulumi's virtual environment.
+  * Run `./venv/Scripts/pip install -r requirements.txt` to [update the dependencies](https://www.pulumi.com/docs/intro/languages/python/#packages) in Pulumi's virtual environment.
 * Add a new variable to store the resource:
    ```python
     db_password = random.RandomPassword("db_password", length=16, special=True)

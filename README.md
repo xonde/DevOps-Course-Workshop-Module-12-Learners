@@ -13,4 +13,5 @@ Also, make sure you have installed the following:
 * [Git](https://git-scm.com/)
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 * [Pulumi](https://www.pulumi.com/docs/get-started/install/)
+* [Azure Data Studio](https://docs.microsoft.com/en-us/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver15)
 
