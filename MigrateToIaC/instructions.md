@@ -30,7 +30,7 @@ _(Pre-terraformed Azure webapp & db should be available)_
   * Then run `pulumi import azure-native:resources:ResourceGroup resource_group <id from above>`
   * This will generate some code that can be copy-pasted into the `__main.py__` file
   * You should delete the existing code and replace with the imported code
-> Windows users may have better success using PowerShell, is using git-bash then all commands containing resource-ids need to be prepended with `MSYS_NO_PATHCONV=1`, as per [this known issue](https://stackoverflow.com/questions/54258996/git-bash-string-parameter-with-at-start-is-being-expanded-to-a-file-path).  
+> Windows users may have better success using PowerShell, if using git-bash then all commands containing resource-ids need to be prepended with `MSYS_NO_PATHCONV=1`, as per [this known issue](https://stackoverflow.com/questions/54258996/git-bash-string-parameter-with-at-start-is-being-expanded-to-a-file-path).
 
 * Now repeat that process (appending the outputted code) for each of:
   * `azure-native:web:AppServicePlan`
