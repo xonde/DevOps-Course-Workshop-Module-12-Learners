@@ -10,6 +10,7 @@ _(Pre-terraformed Azure webapp & db should be available)_
 * We'll use the local backend rather than signing up for pulumi `pulumi login --local`
 * For passphrases just set any value for now e.g. "passphrase"
   * Run `export PULUMI_CONFIG_PASSPHRASE=passphrase` in shell or `$ENV:PULUMI_CONFIG_PASSPHRASE="passphrase"` in PowerShell.
+* Make sure you're logged into the Azure cli
 
 ## Create project
 
