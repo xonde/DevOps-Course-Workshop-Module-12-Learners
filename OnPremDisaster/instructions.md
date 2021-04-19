@@ -10,7 +10,6 @@ A colleague has already changed the CI server to push a docker image, so all we 
 
 We need to create a standard app service / database setup:
 
-- Resource Group
 - App Service & Plan
 - Database Server
 - Database
@@ -19,9 +18,9 @@ Then we need to restore data from the still existing on premise database into th
 
 ## Setup
 
-Make sure you have Azure CLI and the VSCode mssql extension installed.
+Make sure you have Azure CLI and Azure Data Studio with the [dacpac](https://docs.microsoft.com/en-us/sql/azure-data-studio/extensions/sql-server-dacpac-extension?view=sql-server-ver15) extension.
 
-> _(Azure db details should be available as a proxy for the "on-premises database")_
+> _(Azure db details will be provided for the "on-premises database")_
 
 ## Instructions
 
@@ -32,9 +31,10 @@ Make sure you have Azure CLI and the VSCode mssql extension installed.
    - For Account Kind, select `BlobStorage`, and the rest of the options can be left as default.
 3. Once created, browse to the Account, and select "Containers" in the sidebar under "Blob service".
 4. Create a new container called "bacpac"
-5. Open SQL Server Management Studio and connect to the "on premise" database using the details provided by your tutor
-6. Right click on the database and chose "Tasks" > "Export data tier application"
-7. Save to Microsoft Azure with the container and account you just created as "database.bacpac"
+5. Open Azure Data Studio and connect to the "on premise" database using the details provided by your tutor
+6. Right click on the database and chose "Data-tier Application Wizard"
+7. Follow the steps to create a `.bacpac` backup of the database
+8. Upload the file (as "database.bacpac") to the container and account you just created
 
 ### Get Templates
 
@@ -157,11 +157,13 @@ We can follow these steps: https://docs.microsoft.com/en-us/azure/azure-resource
 },
 ```
 
+> Don't forget to update the bacpacUrl variable, and if you named your container or file differently (from bacpac/database.bacpac) you will need to ensure the URL matches your resource
+
 ### Deploy the template
 
 1. Generate a password for the database, it has to abide by complexity rules so make it longish, with numbers, symbols and both cases of letters.
 2. Go to the storage account you created and copy the first key in the "Access Keys" section.
-3. Run `az deployment group create --resource-group arm-dr --template-file template.json --parameters parameters.json --parameters administratorLoginPassword=<db_password> --parameters storageAccountKey=<storage_access_key> --parameters importDatabase=true -c`
+3. Run `az deployment group create --resource-group <resource_group> --template-file template.json --parameters parameters.json --parameters administratorLoginPassword=<db_password> --parameters storageAccountKey=<storage_access_key> --parameters importDatabase=true -c`
 4. Confirm the deployment (the step is required by the `-c` parameter)
 5. Confirm this worked by browsing to https://<webapp_name>.azurewebsites.net/
 
