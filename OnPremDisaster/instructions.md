@@ -1,4 +1,4 @@
-# 2. Recover from on-premise disaster into the cloud with IaC
+# 1. Recover from on-premise disaster into the cloud with IaC
 
 > Goal: Handle a dead on-premise web server by recreating it, and moving its database into Azure via a new Azure Resource Manager template.
 

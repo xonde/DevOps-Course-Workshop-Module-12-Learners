@@ -1,4 +1,4 @@
-# 1. Moving existing cloud infrastructure to IaC
+# 2. Moving existing cloud infrastructure to IaC
 
 > Goal: Setup Pulumi to manage a simple existing App Service and Database
 
