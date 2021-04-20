@@ -172,8 +172,10 @@ Let's do this now for each of the SQL Server and App Service resources you'll ne
 
 1. Go to the Azure Portal and browse to your Resource Group for this workshop.
 2. Choose Add and then "SQL database".
-3. Select your resource group and choose "Create new" for the server (set any value for the username and password you like - we are just here to generate a template).
-4. Hit "Configure database" and select the Basic tier.
+3. Configure the database settings
+  a) Select your resource group
+  b) Choose "Create new" for the server (set any value for the username and password you like - we are just here to generate a template).
+  c) Hit "Configure database" and select the Basic tier.
 5. Click "Review and create".
 6. **The magic happens!** Rather than actually creating the resource, click "Download a template for automation".
 7. Click the download button and extract the zip.
@@ -250,7 +252,7 @@ Hints:
 
 Sadly the Azure Portal won't allow direct use of the backup file we created, so we need to add it to the the ARM template ourselves.
 
-We can follow these steps: [https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-tutorial-deploy-sql-extensions-bacpac#edit-the-template](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-tutorial-deploy-sql-extensions-bacpac#edit-the-template)
+We can follow the steps below which are derived from this guide: [https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-tutorial-deploy-sql-extensions-bacpac#edit-the-template](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-tutorial-deploy-sql-extensions-bacpac#edit-the-template)
 
 1. Add the following to `parameters` in `template.json`:
 

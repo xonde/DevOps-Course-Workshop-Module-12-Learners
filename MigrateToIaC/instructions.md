@@ -2,7 +2,7 @@
 
 > Goal: Setup Pulumi to manage a simple existing App Service and Database
 
-_(Pre-terraformed Azure webapp & db should be available)_
+_You should find that some resources (including an Azure App Service and an SQL DB) have been created for you in advance for this exercise and are available in your workshop resource group. Ask a trainer if you're not sure what resources that includes_
 
 ## Set up Pulumi
 
