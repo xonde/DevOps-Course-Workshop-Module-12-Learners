@@ -86,20 +86,19 @@ We're going to use the [RandomPassword](https://www.pulumi.com/docs/reference/pk
 * Browse to your webapp's endpoint and confirm the database connection still works, and the `deploymentMethod` output has changed.
   > it may take a few minutes for the new database password to propogate, so if login fails then wait a bit and try again.
 
-# (Stretch) Store state in Azure blob
+## (Stretch) Store state in Azure blob
 
 Currently all of our infrastructure's state is being stored on your local machine so only you can make consistent changes; neither you nor your teammates will appreciate that if you ever want to go on holiday! We should instead store our state in a shared location that other team members can access.
 
 * Create a storage account in your resource group with an Account Kind of BlobStorage
   * Do this manually through the Azure CLI or portal
-* [Login with pulumi to the azure storage backend](https://www.pulumi.com/docs/intro/concepts/state/#logging-into-the-azure-blob-storage-backend)
-* Import the existing resource group again
+* [Export a checkpoint from your existing state](https://www.pulumi.com/docs/intro/concepts/state/#migrating-between-backends)
+* [Log in with Pulumi to the Azure Storage backend](https://www.pulumi.com/docs/intro/concepts/state/#logging-into-the-azure-blob-storage-backend)
+* Import your checkpoint
 * Check that the state is now created in the blob storage - you should see a `.pulumi` folder
-* Run `pulumi up`, but don't confirm the action
-  * Note that since the state has been wiped clean, it no longer tracks the other existing resources
-* Reimport those, and verify that you're back to a stage where pulumi up would make no changes
+* Run `pulumi up`, and verify that there would be no changes as the state should match
 
-# (Stretch) Add a staging environment
+## (Stretch) Add a staging environment
 
 We should make sure we have a staging environment that matches our production infrastructure. We already have a template for that infrastructure, so we'd like to parameterise it to be able to use it in multiple environments. Pulumi's solution to managing this is using different 'stacks'
 
@@ -107,13 +106,15 @@ We should make sure we have a staging environment that matches our production in
 * Import the resource group again - for this exercise we'll share that between both stacks (though in a real project we might separate the resources)
 * [Add a stack_name of staging to your pulumi config](https://www.pulumi.com/docs/intro/concepts/config/)
 * Use the stack name in your code to prefix your resources logical names
-> Hint: You will find that Pulumi is now creating resources with the names you gave (plus some random noise), rather than the names the resources had when you imported them. Some of the names you provided previously may lead be names Azure won't allow, e.g. underscores in `sql_server` or `web_app`
+<details><summary>My names are erroring?</summary>You will find that Pulumi is now creating resources with the names you gave (plus some random noise), rather than the names the resources had when you imported them. Some of the names you provided previously may lead be names Azure won't allow, e.g. underscores in `sql_server` or `web_app`</details>
+
 * Run pulumi up, and check if the resources create successfully
 * You may discover here that pulumi import is not perfect - track down any missing/incorrect fields
-> Hint: Can you spot any differences between your new staging application and the existing one?
+> Hint: Can you spot any differences in the portal between your new staging application and the existing one?
 <details><summary>Hint</summary>How is Pulumi tracking your docker image?</details>
 <details><summary>Hint</summary>You may want to look at adding [a pulumi firewall rule](https://www.pulumi.com/docs/reference/pkg/azure-native/sql/firewallrule/)</details>
-  * Our app doesn't automatically perform database migrations; once your staging app can communicate with the DB you may want to add an appropriate table to the database, but feel free to skip this step
+
+* Our app doesn't automatically perform database migrations; once your staging app can communicate with the DB you may want to add an appropriate table to the database
 * Switch back to the production environment - will `pulumi up` make any changes?
 
 ## Take inspiration
