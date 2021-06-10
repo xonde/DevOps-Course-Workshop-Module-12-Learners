@@ -218,7 +218,7 @@ This is what needs changing. Can you figure out what changes to make, and where?
 * We need to set the parameter `dockerRegistryPassword` to `""`.
 * We need to add a new variable called `connectionString`, with the value `"[concat('Server=tcp:', parameters('serverName'), '.database.windows.net,1433;Initial Catalog=', parameters('databaseName'), ';Persist Security Info=False;User ID=', parameters('administratorLogin'), ';Password=', parameters('administratorLoginPassword'), ';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;')]"`
 * We need to add two new values in the `appSettings` for the `siteConfig` for the web site. 
-  * The name of the first will be `"CONNECTION_STRING"` and its value will need to come from the parameter `connectionString` that we defined earlier.
+  * The name of the first will be `"CONNECTION_STRING"` and its value will need to come from the variable `connectionString` that we defined earlier.
   * The name of the second will be `"DEPLOYMENT_METHOD"` and its value will be `"ARM Template"`
 
 Hints:
