@@ -33,13 +33,13 @@ We will connect to this database using Azure Data Studio, backup the database to
 
 1. In the Azure portal go to your resource group for this workshop.
 2. Create a new temporary Storage Account.
-   - For Account Kind, select `BlobStorage`, and the rest of the options can be left as default.
-3. Once created, browse to the Account, and select "Containers" in the sidebar under "Blob service".
+   - Keep the default option for Performance (Standard) and select the "Locally-redundant" option for Redundancy.
+3. Once created, browse to the Account, and select "Containers" in the sidebar.
 4. Create a new container called "bacpac".
 5. Open Azure Data Studio and connect to the "on-premise" database using the details provided by your tutor.
 6. Right click on the database and chose "Data-tier Application Wizard".
-7. Follow the steps to create a `.bacpac` backup of the database.
-8. Upload the file (as "database.bacpac") to the container and account you just created.
+7. Follow the steps to create a `.bacpac` backup of the database, and name it "database.bacpac".
+8. Upload the file ("database.bacpac") to the container and account you just created.
 
 Now, we have a `BACPAC` file in an Azure storage account - this is where it needs to be in order for us to restore the database.
 
