@@ -31,8 +31,9 @@ We will connect to this database using Azure Data Studio, backup the database to
 
 > Azure SQL databases come with automated point-in-time backups, so `BACPAC` files are primarily used for moving databases from one server to another - as we're doing here. 
 
-1. In the Azure portal go to your resource group for this workshop.
-2. Create a new temporary Storage Account.
+1. In the Azure portal, search for "Storage Accounts" in the top level search bar (in the blue bar, right at the top of the page)
+2. Click "Create" to create a new Storage Account, and configure it:
+   - Select your workshop resource group
    - Keep the default option for Performance (Standard) and select the "Locally-redundant" option for Redundancy.
 3. Once created, browse to the Account, and select "Containers" in the sidebar.
 4. Create a new container called "bacpac".
@@ -170,25 +171,24 @@ Let's do this now for each of the SQL Server and App Service resources you'll ne
 
 #### SQL Server
 
-1. Go to the Azure Portal and browse to your Resource Group for this workshop.
-2. Choose Add and then "SQL database".
-3. Configure the database settings
+1. Search for "SQL databases" in the top search bar and then click "create".
+2. Configure the database settings
   a) Select your resource group
   b) Choose "Create new" for the server (set any value for the username and password you like - we are just here to generate a template).
   c) Hit "Configure database" and select the Basic tier.
-5. Click "Review and create".
-6. **The magic happens!** Rather than actually creating the resource, click "Download a template for automation".
-7. Click the download button and extract the zip.
+3. Click "Review and create".
+4. **The magic happens!** Rather than actually creating the resource, click "Download a template for automation".
+5. Click the download button and extract the zip.
 
 #### App service
 
-8. Head back to the Resource Group, click Add and then "Web app".
-9. Choose Docker Container on Linux.
-10. Create a new App Service Plan (change size to the Dev B1 Tier).
-11. On the Docker tab choose Image Source "Docker Hub" and Image and Tag "corndelldevopscourse/mod12app:latest".
-12. Click "Review and create".
-13. **The magic happens (again)!** Rather than actually creating the resource, click "Download a template for automation".
-14. Click the download button and extract the zip.
+6. Search for "App Services" in the top search bar and then click "create".
+7. Choose Docker Container on Linux.
+8. Create a new App Service Plan (change size to the Dev B1 Tier).
+9. On the Docker tab choose Image Source "Docker Hub" and Image and Tag "corndelldevopscourse/mod12app:latest".
+10. Click "Review and create".
+11. **The magic happens (again)!** Rather than actually creating the resource, click "Download a template for automation".
+12. Click the download button and extract the zip.
 
 Once you've extracted the zip, you'll notice that it contained two files! You should see a `template.json` file, and a `parameters.json` file.
 We talked about parameters before - these are the inputs to your template that can change in order to make your template useful in other scenarios or environments. 
