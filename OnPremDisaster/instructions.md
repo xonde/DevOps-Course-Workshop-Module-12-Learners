@@ -173,10 +173,10 @@ Let's do this now for each of the SQL Server and App Service resources you'll ne
 
 1. Search for "SQL databases" in the top search bar and then click "create".
 2. Configure the database settings
-  a) Select your resource group
-  b) Choose "Create new" for the server (set any value for the username and password you like - we are just here to generate a template).
-  c) Hit "Configure database" and select the Basic tier.
-3. Click "Review and create".
+    1. Select your resource group
+    2. Choose "Create new" for the server (set any value for the username and password you like - we are just here to generate a template).
+    3. Hit "Configure database" and select the Basic tier.
+3. Check that you completed the above. Click "Review and create" *but* don't hit create after.
 4. **The magic happens!** Rather than actually creating the resource, click "Download a template for automation".
 5. Click the download button and extract the zip.
 
@@ -320,7 +320,7 @@ We can follow the steps below which are derived from this guide: [https://docs.m
 
 Our template is finally ready to deploy! Here are the final steps we need to take.
 
-1. Generate a password for the database. There are minimum complexity rules for this password, so make it long-ish (more than 7 characters), with numbers, symbols and both cases of letters.
+1. Make up a password for the database. There are minimum complexity rules for this password, so make it long-ish (more than 7 characters), with numbers, symbols and both cases of letters.
 2. Go to the storage account you created and copy the first key in the "Access Keys" section.
 3. **It's time!** Run `az deployment group create --resource-group <resource_group> --template-file template.json --parameters parameters.json --parameters administratorLoginPassword=<db_password> --parameters storageAccountKey=<storage_access_key> --parameters importDatabase=true -c`
 4. Confirm the deployment (this step is required by the `-c` parameter).
