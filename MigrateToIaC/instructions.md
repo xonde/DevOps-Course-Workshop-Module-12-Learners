@@ -6,7 +6,7 @@ _You should find that some resources (including an Azure App Service and an SQL 
 
 ## Set up Pulumi
 
-* [Install Pulumi](https://www.pulumi.com/docs/get-started/install/) 
+* [Install Pulumi](https://www.pulumi.com/docs/get-started/install/)
 * We'll use the local backend rather than signing up for pulumi `pulumi login --local`
 * For passphrases just set any value for now e.g. "passphrase"
   * Run `export PULUMI_CONFIG_PASSPHRASE=passphrase` in shell or `$ENV:PULUMI_CONFIG_PASSPHRASE="passphrase"` in PowerShell.
@@ -18,6 +18,7 @@ _You should find that some resources (including an Azure App Service and an SQL 
 * Name: e.g. `move-to-iac`
 * Location: `uksouth`
 
+> If you hit problems installing or setting up Pulumi then you can do the exercise inside Docker, see [pulumi_docker_setup.md](pulumi_docker_setup.md). The image download is large (2.7GB), so you may want to pull it down in the morning: `docker pull corndelldevopscourse/pulumi-starter`
 
 ## Import resources
 
