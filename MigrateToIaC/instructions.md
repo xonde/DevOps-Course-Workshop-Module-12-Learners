@@ -52,9 +52,9 @@ We're going to use the [RandomPassword](https://www.pulumi.com/docs/reference/pk
 * Install the provider
   * Add `pulumi-random>=3.1.1` as a new line in your `requirements.txt` file.
   * Run `./venv/Scripts/pip install -r requirements.txt` on Windows or `./venv/bin/pip install -r requirements.txt` on a Mac. This will [update the dependencies](https://www.pulumi.com/docs/intro/languages/python/#packages) in Pulumi's virtual environment.
-* Add a new variable to store the resource:
-   ```python
-    db_password = random.RandomPassword("db_password", length=16, special=True)
+* Import the module and then add a new variable to store the resource:
+  ```python
+    db_password = pulumi_random.RandomPassword("db_password", length=16, special=True)
   ```
   > Beware of the location of variable initialisations in the file - they have to be placed above other resources that reference them.
 * Use this resource's `result` output in the config for the sqlserver resource
