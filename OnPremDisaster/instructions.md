@@ -201,7 +201,7 @@ We now have ARM templates that will provision the resources we need! However, th
 Merge these into single `template.json` and `parameters.json` files:
 
 1. Start with the SQL database files.
-2. Copy and paste the parameters,  resources, and variables from the App Service `template.json` file into the applicable arrays in the final `template.json` file.
+2. Copy and paste the parameters,  resources, and variables from the App Service `template.json` file into their respective arrays in the final `template.json` file.
 3. Copy and paste the parameters from the App Service `parameters.json` file into the parameters field in the final `parameters.json` file.
 4. Make sure you haven't introduced any anomalies.
 
