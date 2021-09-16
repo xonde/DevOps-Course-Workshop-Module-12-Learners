@@ -38,7 +38,7 @@ We will connect to this database using Azure Data Studio, backup the database to
 3. Once created, browse to the Account, and select "Containers" in the sidebar.
 4. Create a new container called "bacpac".
 5. Open Azure Data Studio and connect to the "on-premise" database using the details provided by your tutor.
-6. Right click on the database and chose "Data-tier Application Wizard".
+6. Right click on the database and choose "Data-tier Application Wizard".
 7. Follow the steps to create a `.bacpac` backup of the database, and name it "database.bacpac".
 8. Upload the file ("database.bacpac") to the container and account you just created.
 
