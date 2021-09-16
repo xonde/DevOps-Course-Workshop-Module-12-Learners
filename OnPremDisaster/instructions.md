@@ -16,6 +16,8 @@ We need to create a standard app service / database setup:
 
 We will do this by creating ARM templates that define the infrastructure we need. Then, we need to restore data from the still existing on-premise database into the new cloud one, and deploy the app code.
 
+*Note: During this exercise you won't use any of the existing resources in your workshop resource group*
+
 ## Setup
 
 Make sure you have Azure CLI and Azure Data Studio with the [dacpac](https://docs.microsoft.com/en-us/sql/azure-data-studio/extensions/sql-server-dacpac-extension?view=sql-server-ver15) extension. 
@@ -280,7 +282,7 @@ We can follow the steps below which are derived from this guide: [https://docs.m
   },
 ```
 
-2. Add the following to the database in the template (just below the `"type": "databases"` line)
+2. Add the following to the database in the template (just below the `"type": "databases"` line, but within the same resource - i.e. we'll end up with an entry in the outer `resources` array that also has its own `resources` array).
 
 ```json
 "resources": [
@@ -332,7 +334,7 @@ Our template is finally ready to deploy! Here are the final steps we need to tak
 4. Confirm the deployment (this step is required by the `-c` parameter).
 5. Confirm this worked by browsing to https://<webapp_name>.azurewebsites.net/
 
-Hopefully, you now have a provisioned website! Or close to one - importing a `BACPAC` file can take a few minutes. If your site hasn't fully provisioned yet, feel free to make a start on the next step. Make sure you commit your code before continuing!
+Hopefully, you now have a provisioned website! Or close to one - importing a `BACPAC` file can take a few minutes. If your site hasn't fully provisioned yet, feel free to make a start on the next step - or if you haven't already, kick off the start of the next exercise as that will also involve a short wait (up to and including the `pulumi new azure-python` step). Make sure you commit your code before continuing!
 
 ### Step 7: Tidy up
 
