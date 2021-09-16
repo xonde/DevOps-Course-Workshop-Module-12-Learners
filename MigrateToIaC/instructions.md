@@ -17,6 +17,7 @@ _You should find that some resources (including an Azure App Service and an SQL 
 * `pulumi new azure-python`
 * Name: e.g. `move-to-iac`
 * Location: `uksouth`
+* The output may suggest you try running `pulumi up`, but this will fail. We first want to replace the generated example code - follow the instructions below.
 
 > If you hit problems installing or setting up Pulumi then you can do the exercise inside Docker, see [pulumi_docker_setup.md](pulumi_docker_setup.md). The image download is large (2.7GB), so you may want to pull it down in the morning: `docker pull corndelldevopscourse/pulumi-starter`
 
@@ -35,23 +36,22 @@ _You should find that some resources (including an Azure App Service and an SQL 
   * You should delete the existing code and replace with the imported code
 > Windows users may have better success using PowerShell, if using git-bash then all commands containing resource-ids need to be prepended with `MSYS_NO_PATHCONV=1`, as per [this known issue](https://stackoverflow.com/questions/54258996/git-bash-string-parameter-with-at-start-is-being-expanded-to-a-file-path).
 
-* Now repeat that process (appending the outputted code) for each of the following resource types:
+* Now repeat that import process (appending the outputted code) for each of the four resources inside the resource group. Use the following resource types instead of `azure-native:resources:ResourceGroup` and pick an appropriate variable name instead of `resource_group`.
   * `azure-native:web:AppServicePlan`
   * `azure-native:web:WebApp`
   * `azure-native:sql:Server`
   * `azure-native:sql:Database`
-> Don't forget to specify appropriate variable names after the resource type
 * Replace all references to other names and ids with a reference to the other resource e.g.:
   * `resource_group_name=resource_group.name`
   * `server_name=sqlserver.name`
   * `server_farm_id=app_service_plan.id`
-* Remove all 'name' properties - pulumi will generate these for you
+* Remove all 'name' properties (at the top level of each resource, not nested ones) - Pulumi will generate these for you
 
 ## Set up app-database connection
 We're going to use the [RandomPassword](https://www.pulumi.com/docs/reference/pkg/random/randompassword/) resource to generate a new random database password.
 * Install the provider
   * Add `pulumi-random>=3.1.1` as a new line in your `requirements.txt` file.
-  * Run `./venv/Scripts/pip install -r requirements.txt` to [update the dependencies](https://www.pulumi.com/docs/intro/languages/python/#packages) in Pulumi's virtual environment.
+  * Run `./venv/Scripts/pip install -r requirements.txt` on Windows or `./venv/bin/pip install -r requirements.txt` on a Mac. This will [update the dependencies](https://www.pulumi.com/docs/intro/languages/python/#packages) in Pulumi's virtual environment.
 * Add a new variable to store the resource:
    ```python
     db_password = random.RandomPassword("db_password", length=16, special=True)
@@ -114,7 +114,7 @@ We should make sure we have a staging environment that matches our production in
 * You may discover here that pulumi import is not perfect - track down any missing/incorrect fields
 > Hint: Can you spot any differences in the portal between your new staging application and the existing one?
 <details><summary>Hint</summary>How is Pulumi tracking your docker image?</details>
-<details><summary>Hint</summary>You may want to look at adding [a pulumi firewall rule](https://www.pulumi.com/docs/reference/pkg/azure-native/sql/firewallrule/)</details>
+<details><summary>Hint</summary>You may want to look at adding [a Pulumi firewall rule](https://www.pulumi.com/docs/reference/pkg/azure-native/sql/firewallrule/)</details>
 
 * Our app doesn't automatically perform database migrations; once your staging app can communicate with the DB you may want to add an appropriate table to the database
 * Switch back to the production environment - will `pulumi up` make any changes?
