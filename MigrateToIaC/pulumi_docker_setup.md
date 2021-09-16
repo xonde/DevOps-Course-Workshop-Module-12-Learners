@@ -4,7 +4,7 @@
 
 ```bash
 # Start and leave running
-docker run -td --name pulumi corndelldevopscourse/pulumi-starter
+docker run -td -v Pulumi:/pulumi --name pulumi corndelldevopscourse/pulumi-starter
 ```
 
 * Install the "Docker" and "Remote - Containers" VSCode extensions
@@ -15,4 +15,4 @@ docker run -td --name pulumi corndelldevopscourse/pulumi-starter
   * Once you're signed in make sure "Softwire DevOps Academy" is the default subscription in `az account list`
 * Now you're ready to `pulumi import` your resource group, return to the [workshop instructions](instructions.md)
 
-Note that your work is only stored in the container so will be lost when you remove it.
+Note that your work is stored in a named volume ("Pulumi").
