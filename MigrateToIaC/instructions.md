@@ -139,7 +139,7 @@ Currently we are embedding the password for the database into our Terraform conf
 * Anyone with access to our source code can also access our database
 * We can't use different passwords for different environments without duplicating the Terraform config
 
-Let's define a new variable `main.tf`:
+Let's define a new variable in `main.tf`:
 
 ```terraform
 variable "database_password" {
@@ -198,7 +198,7 @@ Import the existing server and database into Terraform, server first:
   * browse to it in the Azure portal
   * hit JSON view in the top right
   * press copy next to the "Resource Id"
-* Run `terraform import azurerm_sql_server.main <id from above>` (assuming you called the )
+* Run `terraform import azurerm_sql_server.main <id from above>` (assuming you called the resource "main")
 
 Then do the same for the database, using `azurerm_sql_database` in the import command.
 
