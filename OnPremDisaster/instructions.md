@@ -16,6 +16,8 @@ We need to create a standard app service / database setup:
 
 We will do this by creating ARM templates that define the infrastructure we need. Then, we need to restore data from the still existing on-premise database into the new cloud one, and deploy the app code.
 
+*Note: During this exercise you won't use any of the existing resources in your workshop resource group*
+
 ## Setup
 
 Make sure you have Azure CLI and Azure Data Studio with the [dacpac](https://docs.microsoft.com/en-us/sql/azure-data-studio/extensions/sql-server-dacpac-extension?view=sql-server-ver15) extension. 
@@ -39,6 +41,7 @@ We will connect to this database using Azure Data Studio, backup the database to
 4. Create a new container called "bacpac".
 5. Open Azure Data Studio and connect to the "on-premise" database using the details provided by your tutor.
 6. Right click on the database and choose "Data-tier Application Wizard".
+   - If you can't see this option, check you installed the dacpac extension above
 7. Follow the steps to create a `.bacpac` backup of the database, and name it "database.bacpac".
 8. Upload the file ("database.bacpac") to the container and account you just created.
 
@@ -176,19 +179,24 @@ Let's do this now for each of the SQL Server and App Service resources you'll ne
     1. Select your resource group
     2. Choose "Create new" for the server (set any value for the username and password you like - we are just here to generate a template).
     3. Hit "Configure database" and select the Basic tier.
-3. Check that you completed the above. Click "Review and create" *but* don't hit create after.
-4. **The magic happens!** Rather than actually creating the resource, click "Download a template for automation".
-5. Click the download button and extract the zip.
+3. Check that you completed the above. Click "Review and create" **but** don't hit create after.
+4. Take a moment to check the details, you should see:
+    - Under "Basics", the Server is described as "(new)" and is "Basic: 2GB storage"
+5. **The magic happens!** Rather than actually creating the resource, click "Download a template for automation".
+6. Click the download button and extract the zip.
 
 #### App service
 
-6. Search for "App Services" in the top search bar and then click "create".
-7. Choose Docker Container on Linux.
-8. Create a new App Service Plan (change size to the Dev B1 Tier).
-9. On the Docker tab choose Image Source "Docker Hub" and Image and Tag "corndelldevopscourse/mod12app:latest".
-10. Click "Review and create".
-11. **The magic happens (again)!** Rather than actually creating the resource, click "Download a template for automation".
-12. Click the download button and extract the zip.
+7. Search for "App Services" in the top search bar and then click "create".
+8. Choose Docker Container on Linux.
+9. Create a new App Service Plan (change size to the Dev B1 Tier).
+10. On the Docker tab choose Image Source "Docker Hub" and Image and Tag "corndelldevopscourse/mod12app:latest".
+11. Click "Review and create".
+12. Take a moment to check the details, you should see:
+    - Under "Details", a reference to the Docker container
+    - The "App Service Plan" section should be marked "(New)", and be SKU "Basic"
+13. **The magic happens (again)!** Rather than actually creating the resource, click "Download a template for automation".
+14. Click the download button and extract the zip.
 
 Once you've extracted the zip, you'll notice that it contained two files! You should see a `template.json` file, and a `parameters.json` file.
 We talked about parameters before - these are the inputs to your template that can change in order to make your template useful in other scenarios or environments. 
@@ -274,7 +282,7 @@ We can follow the steps below which are derived from this guide: [https://docs.m
   },
 ```
 
-2. Add the following to the database in the template (just below the `"type": "databases"` line)
+2. Add the following to the database in the template (just below the `"type": "databases"` line, but within the same resource - i.e. we'll end up with an entry in the outer `resources` array that also has its own `resources` array).
 
 ```json
 "resources": [

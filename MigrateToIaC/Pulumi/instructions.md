@@ -92,10 +92,11 @@ We're going to use the [RandomPassword](https://www.pulumi.com/docs/reference/pk
 
 Currently all of our infrastructure's state is being stored on your local machine so only you can make consistent changes; neither you nor your teammates will appreciate that if you ever want to go on holiday! We should instead store our state in a shared location that other team members can access.
 
-* Create a storage account in your resource group with an Account Kind of BlobStorage
+* Create a storage account in your resource group
   * Do this manually through the Azure CLI or portal
 * [Export a checkpoint from your existing state](https://www.pulumi.com/docs/intro/concepts/state/#migrating-between-backends)
 * [Log in with Pulumi to the Azure Storage backend](https://www.pulumi.com/docs/intro/concepts/state/#logging-into-the-azure-blob-storage-backend)
+  * Note that the "container-path" is just the name of the relevant container within your storage account
 * Import your checkpoint
 * Check that the state is now created in the blob storage - you should see a `.pulumi` folder
 * Run `pulumi up`, and verify that there would be no changes as the state should match
@@ -114,11 +115,13 @@ We should make sure we have a staging environment that matches our production in
 * You may discover here that pulumi import is not perfect - track down any missing/incorrect fields
 > Hint: Can you spot any differences in the portal between your new staging application and the existing one?
 <details><summary>Hint</summary>How is Pulumi tracking your docker image?</details>
-<details><summary>Hint</summary>You may want to look at adding [a Pulumi firewall rule](https://www.pulumi.com/docs/reference/pkg/azure-native/sql/firewallrule/)</details>
+<details><summary>Hint</summary>
+
+You may want to look at adding [a Pulumi firewall rule](https://www.pulumi.com/docs/reference/pkg/azure-native/sql/firewallrule/)</details>
 
 * Our app doesn't automatically perform database migrations; once your staging app can communicate with the DB you may want to add an appropriate table to the database
 * Switch back to the production environment - will `pulumi up` make any changes?
 
 ## Take inspiration
 
-Pulumi provide [a wide range of example setups](https://github.com/pulumi/examples) that you could want to configure - take a look at those and see how else you could extend your system
+Pulumi provide [a wide range of example setups](https://github.com/pulumi/examples) that you could want to configure - take a look at those and see how else you could extend your system.
