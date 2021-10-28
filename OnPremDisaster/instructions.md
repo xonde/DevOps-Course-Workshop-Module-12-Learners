@@ -35,7 +35,7 @@ We will connect to this database using Azure Data Studio, backup the database to
 
 1. In the Azure portal, search for "Storage Accounts" in the top level search bar (in the blue bar, right at the top of the page)
 2. Click "Create" to create a new Storage Account, and configure it:
-   - Select your workshop resource group
+   - Select your workshop resource group (name ending in "_Workshop", not "_Workshop_M12_Pt2", that's for this afternoon)
    - Keep the default option for Performance (Standard) and select the "Locally-redundant" option for Redundancy.
 3. Once created, browse to the Account, and select "Containers" in the sidebar.
 4. Create a new container called "bacpac".

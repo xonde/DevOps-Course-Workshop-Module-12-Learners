@@ -2,7 +2,7 @@
 
 > Goal: Setup Terraform to manage a simple existing App Service and Database
 
-_You should find that some resources (including an Azure App Service and an SQL DB) have been created for you in advance for this exercise and are available in your workshop resource group. Ask a trainer if you're not sure what resources that includes_
+_You should find that some resources (including an Azure App Service and an SQL DB, with "non-iac" in the name) have been created for you in advance for this exercise and are available in a workshop resource group with a name ending in "M12_Pt2"._
 
 ## Step 1: Setup
 
@@ -10,6 +10,7 @@ _You should find that some resources (including an Azure App Service and an SQL 
 
 * [Download terraform](https://www.terraform.io/downloads.html) and add it to your PATH
   * Verify it is installed by running `terraform -version`
+* Install an extension for Terraform in VSCode
 
 ### Set up the Azure provider
 
@@ -40,13 +41,15 @@ You should not add the `.terraform` directory to source control, instead commit 
 
 We are not going to have Terraform manage the Resource Group, and will instead just tell Terraform that it exists with a `data` block.
 
-Add the following to your `main.tf`, using your Workshop Resource Group name.
+Add the following to your `main.tf`, using the resource group name for this part of the workshop, which should end with "M12_Pt2".
 
 ```terraform
 data "azurerm_resource_group" "main" {
   name = "<Your resource group name>"
 }
 ```
+
+> Keep the quotes around the resource group name, but not the angle brackets.
 
 Save your changes and run `terraform plan`. Terraform will connect to Azure and check that it can find the resource group. You should see an output like
 
@@ -215,6 +218,8 @@ Instead update your configuration in `main.tf` so that it matches what is alread
 
 Once you're happy with the changes run `terraform apply` and check your App Service still works.
 
+> Make sure you don't delete your existing database! If Terraform says it's going to destroy something then you still need to change something in your config to match Azure.
+
 <details><summary>Answer</summary>
 
 Your Terraform config should look something like this:
@@ -258,7 +263,7 @@ lifecycle {
 }
 ```
 
-If you run `terraform plan` now Terraform will error rather than offering to delete your database.
+If you run `terraform plan` now, after changing the database name, Terraform will error rather than offering to delete your database.
 
 > If you remove the `prevent_destroy` directive from the configuration you'll be able to delete the resource again. That means if you remove the `azurerm_sql_database` resource completely Terraform will still try and destroy it.
 
@@ -267,6 +272,30 @@ If you run `terraform plan` now Terraform will error rather than offering to del
 Update the `CONNECTION_STRING` App Setting in the App Service Terraform configuration to reference your Database resources rather than being hard coded.
 
 > Terraform resources export attributes that could be helpful here, for example `azurerm_sql_server` exports the [`fully_qualified_domain_name`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/sql_server#fully_qualified_domain_name) attribute.
+
+## Next steps
+
+You've reached the end of the exercise!
+
+You can either:
+
+* Carry on with the stretch goals below
+* [Have a go at using Pulumi](./Pulumi/instructions.md), a Python based Infrastructure as Code tool
+
+## (Stretch) Outputs
+
+Terraform has a concept of [Output Values](https://www.terraform.io/docs/language/values/outputs.html) that are printed out when you run a plan or apply.
+These are useful if there are values that you need to feed into another system, or if you start splitting up your Terraform config into modules.
+
+Let's try it out. Add a new file called `outputs.tf` (this file name is also just convention), and add an output definition:
+
+```terraform
+output "webapp_hostname" {
+  value = azurerm_app_service.main.default_site_hostname
+}
+```
+
+If you run `terraform apply` you should see your site hostname printed out at the end of the console output.
 
 ## (Stretch) Random database password
 
@@ -298,10 +327,16 @@ Your Terraform state is now stored in the remote blob and can be used by other d
 
 ## (Stretch) Add a staging environment
 
-One of the big advantages of Infrastructure as Code is that it allows you to easily set up (and tear down) test environments that closely match your production infrastructure. We should make sure we have a staging environment that matches our production infrastructure. We already have a template for that infrastructure, so we'd like to parameterise it to be able to use it in multiple environments. Terraform's solution to managing this is using different [workspaces](https://www.terraform.io/docs/language/state/workspaces.html).
+One of the big advantages of Infrastructure as Code is that it allows you to easily set up (and tear down) test environments that closely match your production infrastructure.
+Let's set up a staging environment that matches out current infrastructure using our Terraform config.
 
-We'll be making our staging environment in the same resource group as our current resources, so will need to give them different names.
-Make a new variable called "prefix" and use it to prefix the names of all your resources, e.g. `name = "${var.prefix}-terraformed-asp"`
+First we need a way of giving resources in our staging environment different names in Azure, so they don't clash with our existing infrastructure.
+It's up to you how you do this, but a common way is to define a "prefix" variable and start all the names of your resources with that prefix, e.g `name = "${var.prefix}-terraformed-asp"`.
+If your existing resources don't have a common prefix, then your prefix can be the empty string for this set of infrastructure.
 
-Create a new Workspace with Terraform and spin up your new environment with a different prefix.
+Once you've done that, we need a way of managing separate environments from the same Terraform config. One way of managing multiple environments with Terraform is using [workspaces](https://www.terraform.io/docs/language/state/workspaces.html).
+Have a read of the documentation and create a new Terraform workspace.
+
+Bring up another copy of your infrastructure with a different prefix, in this new workspace.
+
 You'll need to find a way to migrate the data from the existing database across, or recreate it in the new database (it's only one table/row), as well as setting up a `azurerm_sql_firewall_rule` so that the App Service can talk to the database.
