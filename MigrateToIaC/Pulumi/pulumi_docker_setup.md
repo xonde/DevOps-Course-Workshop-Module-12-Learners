@@ -4,7 +4,7 @@
 
 ```bash
 # Start and leave running
-docker run -td -v Pulumi:/pulumi --name pulumi corndelldevopscourse/pulumi-starter
+docker run -td -v Pulumi:/pulumi --name pulumi corndeldevopscourse/pulumi-starter
 ```
 
 * Install the "Docker" and "Remote - Containers" VSCode extensions

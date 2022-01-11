@@ -19,7 +19,7 @@ _You should find that some resources (including an Azure App Service and an SQL 
 * Location: `uksouth`
 * The output may suggest you try running `pulumi up`, but this will fail. We first want to replace the generated example code - follow the instructions below.
 
-> If you hit problems installing or setting up Pulumi then you can do the exercise inside Docker, see [pulumi_docker_setup.md](pulumi_docker_setup.md). The image download is large (2.7GB), so you may want to pull it down in the morning: `docker pull corndelldevopscourse/pulumi-starter`
+> If you hit problems installing or setting up Pulumi then you can do the exercise inside Docker, see [pulumi_docker_setup.md](pulumi_docker_setup.md). The image download is large (2.7GB), so you may want to pull it down in the morning: `docker pull corndeldevopscourse/pulumi-starter`
 
 ## Import resources
 
