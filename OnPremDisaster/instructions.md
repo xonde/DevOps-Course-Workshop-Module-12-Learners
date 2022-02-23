@@ -33,7 +33,7 @@ We will connect to this database using Azure Data Studio, backup the database to
 
 > Azure SQL databases come with automated point-in-time backups, so `BACPAC` files are primarily used for moving databases from one server to another - as we're doing here. 
 
-1. In the Azure portal, search for "Storage Accounts" in the top level search bar (in the blue bar, right at the top of the page)
+1. In the [Azure portal](https://portal.azure.com/), search for "Storage Accounts" in the top level search bar (in the blue bar, right at the top of the page)
 2. Click "Create" to create a new Storage Account, and configure it:
    - Select your workshop resource group (name ending in "_Workshop", not "_Workshop_M12_Pt2", that's for this afternoon)
    - Keep the default option for Performance (Standard) and select the "Locally-redundant" option for Redundancy.
@@ -43,6 +43,8 @@ We will connect to this database using Azure Data Studio, backup the database to
 6. Right click on the database and choose "Data-tier Application Wizard".
    - If you can't see this option, check you installed the dacpac extension above
 7. Follow the steps to create a `.bacpac` backup of the database, and name it "database.bacpac".
+   - The operation is "Export the schema and data from a database to the logical .bacpac file format [Export Bacpac]"
+   - This will take a few minutes, you can carry on with step 2 below, but remember to come back and upload it!
 8. Upload the file ("database.bacpac") to the container and account you just created.
 
 Now, we have a `BACPAC` file in an Azure storage account - this is where it needs to be in order for us to restore the database.
