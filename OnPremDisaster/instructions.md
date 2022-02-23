@@ -176,7 +176,7 @@ Let's do this now for each of the SQL Server and App Service resources you'll ne
 
 #### SQL Server
 
-1. Search for "SQL databases" in the top search bar and then click "create".
+1. In the Azure Portal, search for "SQL databases" in the top search bar and then click "create".
 2. Configure the database settings
     1. Select your resource group
     2. Choose "Create new" for the server (set any value for the username and password you like - we are just here to generate a template).
