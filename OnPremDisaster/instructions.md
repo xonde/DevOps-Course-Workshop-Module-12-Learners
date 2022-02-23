@@ -336,6 +336,15 @@ Our template is finally ready to deploy! Here are the final steps we need to tak
 4. Confirm the deployment (this step is required by the `-c` parameter).
 5. Confirm this worked by browsing to https://<webapp_name>.azurewebsites.net/
 
+You should see the following JSON:
+
+```json
+{
+  "status": "Successfully connected to the db containing info for Module 12 Workshop",
+  "deploymentMethod": "ARM Template"
+}
+```
+
 Hopefully, you now have a provisioned website! Or close to one - importing a `BACPAC` file can take a few minutes. If your site hasn't fully provisioned yet, feel free to make a start on the next step. Make sure you commit your code before continuing!
 
 ### Step 7: Tidy up
@@ -357,10 +366,9 @@ You can use `what-if` in order to simulate the effect of deploying a template, w
 
 ### Step 8: Check out the site
 
-The moment of truth.
+Head back to https://<webapp_name>.azurewebsites.net/, or find the created App Service in Azure Portal, and click on its URL.
 
-Go to the created App Service in Azure Portal, and click on its URL.
-If everything is setup correctly you should see the following JSON:
+As before you should see the following JSON:
 
 ```json
 {
