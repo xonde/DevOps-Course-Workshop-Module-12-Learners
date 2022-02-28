@@ -1,8 +1,15 @@
 # 2. Moving existing cloud infrastructure to IaC
 
-> Goal: Setup Terraform to manage a simple existing App Service and Database
+> Goal: Setup Terraform to manage an existing App Service and Database
 
-_You should find that some resources (including an Azure App Service and an SQL DB, with "non-iac" in the name) have been created for you in advance for this exercise and are available in a workshop resource group with a name ending in "M12_Pt2"._
+## Outline
+
+You should find that some Azure resources have been created for you in a resource group with a name ending in "M12_Pt2". This consists of an App Service and associated App Service Plan with "non-iac" in the name, along with an SQL Database and associated SQL Server.
+
+During this exercise we will:
+
+* Use Terraform to create a new App Service and associated App Service Plan
+* Import the existing SQL Database and SQL Server so that we can manage them with Terraform
 
 ## Step 1: Setup
 
@@ -106,9 +113,12 @@ You'll need to have a look at the configuration of the existing App Service in A
 
 Hints:
 
-* The existing App Service is running a Docker image. If you navigate to the App Service in the Azure portal and then click on "Deployment Center" you'll see the image name.
+* The existing App Service is running a Docker image. If you navigate to the App Service (not the App Service Plan) in the Azure portal and then click on "Deployment Center" you'll see the image name.
 * The app_settings block will need to include the connection string for the database, which you can get from the "Configuration" tab in the Azure portal. This includes the database password, which we don't want in source control, but don't worry about this for now, we'll look at variables and secrets next.
+* Ignore the `connection_string` block in the Terraform documentation example. We will pass our connection string in via the `app_settings` block.
 * You can `terraform fmt` command to format your `main.tf` file and `terraform validate` to check the configuration without taking the time to do a plan.
+
+Note that App Service names need to be globally unique.
 
 <details><summary>Answer</summary>
 
@@ -132,17 +142,16 @@ resource "azurerm_app_service" "main" {
 }
 ```
 
-Note that App Service names need to be globally unique.
-
 </details>
 
 ## Step 3: Variables and secrets
 
-Currently we are embedding the password for the database into our Terraform config. That comes with a couple of problems:
+Currently we are embedding the password for the database into our Terraform config as part of the connection string. That comes with a couple of problems:
 
 * Anyone with access to our source code can also access our database
 * We can't use different passwords for different environments without duplicating the Terraform config
 
+In Terraform we can use variables to avoid hard coding values in our config, they act similarly to ARM Template parameters.
 Let's define a new variable in `main.tf`:
 
 ```terraform
@@ -218,11 +227,11 @@ Instead update your configuration in `main.tf` so that it matches what is alread
 
 Once you're happy with the changes run `terraform apply` and check your App Service still works.
 
-> Make sure you don't delete your existing database! If Terraform says it's going to destroy something then you still need to change something in your config to match Azure.
+**Do not delete your existing server or database!** If Terraform says it's going to destroy something then you still need to change your config to match Azure.
 
 <details><summary>Answer</summary>
 
-Your Terraform config should look something like this:
+Your Terraform config should look like this:
 
 ```terraform
 
@@ -243,6 +252,8 @@ resource "azurerm_sql_database" "main" {
   edition             = "Basic"
 }
 ```
+
+Make sure the names of the resources exactly match what already exists in Azure.
 
 </details>
 
@@ -307,7 +318,7 @@ Make sure the random password `result` is used by both the Database Server and A
 
 ## (Stretch) Store state in Azure blob
 
-Currently all of our infrastructure's state is being stored on your local machine so only you can make consistent changes; neither you nor your teammates will appreciate that if you ever want to go on holiday! We should instead store our state in a shared location that other team members can access.
+Currently all of our infrastructure's state is being stored on your local machine so only you can make changes; neither you nor your teammates will appreciate that if you ever want to go on holiday! We should instead store our state in a shared location that other team members can access.
 
 * Create a Storage Account and Container in your resource group in the Azure portal (manually rather than through Terraform)
 * Add the following inside your existing `terraform` block inside `main.tf`
@@ -330,7 +341,7 @@ Your Terraform state is now stored in the remote blob and can be used by other d
 One of the big advantages of Infrastructure as Code is that it allows you to easily set up (and tear down) test environments that closely match your production infrastructure.
 Let's set up a staging environment that matches out current infrastructure using our Terraform config.
 
-First we need a way of giving resources in our staging environment different names in Azure, so they don't clash with our existing infrastructure.
+We will need to give resources in our staging environment different names in Azure so they don't clash with our existing infrastructure.
 It's up to you how you do this, but a common way is to define a "prefix" variable and start all the names of your resources with that prefix, e.g `name = "${var.prefix}-terraformed-asp"`.
 If your existing resources don't have a common prefix, then your prefix can be the empty string for this set of infrastructure.
 
