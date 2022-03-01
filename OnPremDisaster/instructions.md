@@ -14,7 +14,7 @@ First we need to get the database set up in the Cloud. The steps will be:
 * Create a new SQL Server and Database in Azure
 * Restore the backup to it
 
-We want to give each developer their own database to test against, so we will automate the last two steps using an ARM template.
+We want to also give each developer their own database to test against later, so we will automate the last two steps using an ARM template.
 
 ## Setup
 
@@ -28,28 +28,34 @@ You might also like to use the [ARM Tools](https://marketplace.visualstudio.com/
 
 The first thing we need to do is create a backup of the "on-premises" database, so we can restore it to our new cloud environment. For the purposes of this exercise, the "on-premises" database will actually be another Azure DB, whose details will be provided to you.
 
-We will connect to this database using Azure Data Studio, backup the database to a `BACPAC` file, then upload it to an Azure blob storage for later import.
+We will connect to this database using Azure Data Studio and backup the database to a `BACPAC` file.
 
 > Azure SQL databases come with automated point-in-time backups, so `BACPAC` files are primarily used for moving databases from one server to another - as we're doing here.
+
+1. Open Azure Data Studio and connect to the "on-premise" database using the details provided by your tutor.
+2. Right click on the database and choose "Data-tier Application Wizard".
+   * If you can't see this option, check you installed the dacpac extension above
+3. Follow the steps to create a `.bacpac` backup of the database, and name it "database.bacpac".
+   * The operation is "Export the schema and data from a database to the logical .bacpac file format [Export Bacpac]"
+   * This will take a few minutes, you can carry on with step 2 below, but remember to come back and upload it!
+
+### Step 2: Upload the backup to Azure
+
+Now we will upload the bacpac file to an Azure storage container ready to restore it later.
 
 1. Log in to the [Azure portal](https://portal.azure.com/) and make sure you're in the "Softwire Academy" directory - it should appear in the top right below your name
 2. In the Azure portal, search for "Storage Accounts" in the top level search bar (in the blue bar, right at the top of the page)
 3. Click "Create" to create a new Storage Account, and configure it:
    * Select your workshop resource group (name ending in "_Workshop", not "_Workshop_M12_Pt2", that's for this afternoon)
    * Keep the default option for Performance (Standard) and select the "Locally-redundant" option for Redundancy.
+   * Leave everything on the other tabs on their defaults
 4. Once created, browse to the Account, and select "Containers" in the sidebar.
 5. Create a new container called "bacpac".
-6. Open Azure Data Studio and connect to the "on-premise" database using the details provided by your tutor.
-7. Right click on the database and choose "Data-tier Application Wizard".
-   * If you can't see this option, check you installed the dacpac extension above
-8. Follow the steps to create a `.bacpac` backup of the database, and name it "database.bacpac".
-   * The operation is "Export the schema and data from a database to the logical .bacpac file format [Export Bacpac]"
-   * This will take a few minutes, you can carry on with step 2 below, but remember to come back and upload it!
-9. Upload the file ("database.bacpac") to the container and account you just created.
+6. Upload the file from Step 1 ("database.bacpac") to the container.
 
 Now, we have a `BACPAC` file in an Azure storage account - this is where it needs to be in order for us to restore the database.
 
-### Step 2: Get ARM template
+### Step 3: Get ARM template
 
 We're ready to bring up our new database. The way we will do this is by provisioning resources in Azure using ARM templates. ARM (Azure Resource Manager) is the deployment and management system that allows you to create and modify resources in Azure, and ARM templates are JSON files which describe the resources you want.
 
@@ -193,7 +199,7 @@ We talked about parameters before - these are the inputs to your template that c
 
 When you're deploying an ARM template, you can specify all the required parameters by hand (on the command line, or elsewhere). However, that's a little unwieldy, and a better option is often to also specify a second JSON file (alongside the template to be deployed) that defines all the parameters you want to pass in. This is what this `parameters.json` file is. If you look at the parameters declared at the top of the `template.json`, and the parameters specified in the `parameters.json`, you'll see the proof - they match up!
 
-### Step 3: Add backup to database
+### Step 4: Add backup to database
 
 Sadly the Azure Portal won't allow direct use of the backup file we created, so we need to add it to the the ARM template ourselves.
 
@@ -219,7 +225,7 @@ We can follow the steps below which are derived from this guide: [https://docs.m
   },
 ```
 
-2. Add the following to the database in the template (just below the `"type": "databases"` line, but within the same resource - i.e. we'll end up with an entry in the outer `resources` array that also has its own `resources` array).
+2. Add the following to the database in the template. This should be a child resource of the database, which is itself a child resource of the SQL Server. Insert it just below the `"type": "databases"` line, but within the same resource - i.e. we'll end up with an entry in the outer `resources` array that also has its own `resources` array.
 
 ```json
 "resources": [
@@ -261,19 +267,74 @@ We can follow the steps below which are derived from this guide: [https://docs.m
 
 > Don't forget to update the bacpacUrl variable, and if you named your container or file differently (from bacpac/database.bacpac) you will need to ensure the URL matches your resource.
 
-### Step 4: Output the connection string
+### Step 5: Allow external connections
 
-qq
+Since this will be a test database we need to allow external users to connect.
+Let's add a firewall rule that allows access from all IPs, i.e. from `0.0.0.0` to `255.255.255.255`.
 
-### Step 5: Deploy the template
+> This could instead be your office's external IP address range, but we'll keep it simple and allow connections from everywhere
+
+The template should already have a couple of resources of type "firewallrules". Copy one of those and adjust it to enable connections from all IPs.
+
+<details><summary>Answer</summary>
+
+```json
+{
+    "apiVersion": "2014-04-01-preview",
+    "dependsOn": [
+        "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+    ],
+    "location": "[parameters('location')]",
+    "name": "AllowAllIps",
+    "properties": {
+        "startIpAddress": "0.0.0.0",
+        "endIpAddress": "255.255.255.255"
+    },
+    "type": "firewallrules"
+},
+```
+
+</details>
+
+### Step 6: Output connection details
+
+Once we have created the database we need to know how to connect to it.
+ARM Templates have outputs that you can see after running a deployment, they are documented here: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/outputs>
+
+Add outputs to your ARM template for the server domain name, administrator username and password.
+
+<details><summary>Answer</summary>
+
+```json
+"outputs": {
+    "serverDomainName": {
+        "type": "string",
+        "value": "[reference(parameters('serverName')).fullyQualifiedDomainName]"
+    },
+    "adminLogin": {
+        "type": "string",
+        "value": "[parameters('administratorLogin')]"
+    },
+    "adminPassword": {
+        "type": "string",
+        "value": "[parameters('administratorLoginPassword')]"
+    }
+}
+```
+
+</details>
+
+### Step 7: Deploy the template
 
 Our template is finally ready to deploy! Here are the final steps we need to take.
 
 1. Make up a password for the database. There are minimum complexity rules for this password, so make it long-ish (more than 7 characters), with numbers, symbols and both cases of letters.
 2. Go to the storage account you created and copy the first key in the "Access Keys" section.
-3. **It's time!** Run `az deployment group create --resource-group <resource_group> --template-file template.json --parameters parameters.json --parameters administratorLoginPassword=<db_password> --parameters storageAccountKey=<storage_access_key> --parameters importDatabase=true -c`
+3. **It's time!** Run `az deployment group create --name m12deployment --resource-group <resource_group> --template-file template.json --parameters parameters.json --parameters administratorLoginPassword=<db_password> --parameters storageAccountKey=<storage_access_key> --parameters importDatabase=true -c`
 4. Confirm the deployment (this step is required by the `-c` parameter).
+    * The deployment might take several minutes
 5. Confirm this worked by connecting to your new database from Azure Data studio.
+    * The connection string should appear in the output from the command above, if you can't find it try running `az deployment show --name m12deployment --resource-group <resource_group> | jq '.properties.outputs'`
     * It might take a couple of minutes for the bacpac file to finish deploying, once it does you should see the DemoTable in your database
 
 ## Next steps
