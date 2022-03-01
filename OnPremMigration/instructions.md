@@ -1,13 +1,10 @@
-# 1. Recover from on-premise disaster into the cloud with IaC
-
-> Goal: Handle a dead on-premise web server by recreating it, and moving its database into Azure via a new Azure Resource Manager template.
+# 1. Migrating an on premises database to Azure
 
 ## Overview
 
-We have an on-premise web app, with a SQL database.
-However, the server running the web app has broken! Fortunately, it's non-critical, and getting it back online isn't of utmost urgency. Rather than investing time and capital in fixing it, we'll just migrate it to the cloud sooner than we would previously have done.
+We have an on-premise web app, with a SQL database which we would like to move into the Cloud.
 
-First we need to get the database set up in the Cloud. The steps will be:
+First we need to get the database set up in Azure. The steps will be:
 
 * Take a backup of the existing database
 * Upload the backup to Azure
