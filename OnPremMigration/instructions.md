@@ -269,7 +269,7 @@ We can follow the steps below which are derived from this guide: [https://docs.m
 Since this will be a test database we need to allow external users to connect.
 Let's add a firewall rule that allows access from all IPs, i.e. from `0.0.0.0` to `255.255.255.255`.
 
-> This could instead be your office's external IP address range, but we'll keep it simple and allow connections from everywhere
+> This could instead be, for example, your office's external IP address range, but we'll keep it simple and allow connections from everywhere
 
 The template should already have a couple of resources of type "firewallrules". Copy one of those and adjust it to enable connections from all IPs.
 
@@ -331,7 +331,7 @@ Our template is finally ready to deploy! Here are the final steps we need to tak
 4. Confirm the deployment (this step is required by the `-c` parameter).
     * The deployment might take several minutes
 5. Confirm this worked by connecting to your new database from Azure Data studio.
-    * The connection string should appear in the output from the command above, if you can't find it try running `az deployment show --name m12deployment --resource-group <resource_group> | jq '.properties.outputs'`
+    * The connection string should appear in the output from the command above, if you can't find it try running `az deployment show --name m12deployment --resource-group <resource_group> | jq '.properties.outputs'`, or find it in the Azure portal, go to your resource group, then Deployments -> m12deployment -> Outputs
     * It might take a couple of minutes for the bacpac file to finish deploying, once it does you should see the DemoTable in your database
 
 ## Next steps
