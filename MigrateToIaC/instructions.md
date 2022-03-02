@@ -4,7 +4,7 @@
 
 ## Outline
 
-You should find that some Azure resources have been created for you in a resource group with a name ending in "M12_Pt2". This consists of an App Service and associated App Service Plan with "non-iac" in the name, along with an SQL Database and associated SQL Server.
+This exercise is separate from the morning exercise - you should find that some Azure resources have been created for you in a new resource group with a name ending in "M12_Pt2". This consists of an App Service and associated App Service Plan with "non-iac" in the name, along with an SQL Database and associated SQL Server.
 
 During this exercise we will:
 
@@ -15,9 +15,11 @@ During this exercise we will:
 
 ### Install terraform
 
-* [Download terraform](https://www.terraform.io/downloads.html) and add it to your PATH
+* [Download terraform](https://www.terraform.io/downloads.html)
+  * There is no installer, extract the zip and put terraform.exe in a folder that is on your PATH
   * Verify it is installed by running `terraform -version`
 * Install an extension for Terraform in VSCode
+  * There are a few options, any will do, we just want syntax highlighting
 
 ### Set up the Azure provider
 
