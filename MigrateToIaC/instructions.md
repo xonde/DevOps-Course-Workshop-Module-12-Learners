@@ -73,15 +73,16 @@ Running `terraform plan` will never make any changes, so it's always safe to run
 
 ## Step 2: Create a new App Service
 
-We're going to create a new instance of the App Service Plan and App Service that are managed by Terraform.
-First go and have a look at the existing resources in the Azure portal.
+First go and have a look at the existing resources for this exercise (in your "M12_Pt2" Resource Group) in the Azure portal.
+We will be basing our Terraform config on these existing resources.
+
 If you open up the existing App Service you should see a response like
 
 ```json
 {"currentDate":"Tuesday, 26 October 2021 10:31","status":"Successfully connected to the db containing info for Module 12 Workshop","deploymentMethod":"cli"}
 ```
 
-For each of these we'll add a `resource` block to our Terraform config that represents a new resource in Azure.
+We're going to create a new instance of the App Service Plan and App Service that are managed by Terraform.
 
 ### App Service Plan (ASP)
 
