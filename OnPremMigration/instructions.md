@@ -30,6 +30,7 @@ We will connect to this database using Azure Data Studio and backup the database
 > Azure SQL databases come with automated point-in-time backups, so `BACPAC` files are primarily used for moving databases from one server to another - as we're doing here.
 
 1. Open Azure Data Studio and connect to the "on-premise" database using the details provided by your tutor.
+   * Use the "SQL Login" Authentication type
 2. Right click on the database and choose "Data-tier Application Wizard".
    * If you can't see this option, check you installed the dacpac extension above
 3. Follow the steps to create a `.bacpac` backup of the database, and name it "database.bacpac".
