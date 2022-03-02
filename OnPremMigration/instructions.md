@@ -303,6 +303,8 @@ Add outputs to your ARM template for the server domain name, administrator usern
 
 <details><summary>Answer</summary>
 
+You'll need to add a new "outputs" property to the top level JSON object in template.json.
+
 ```json
 "outputs": {
     "serverDomainName": {
@@ -328,7 +330,7 @@ Our template is finally ready to deploy! Here are the final steps we need to tak
 
 1. Make up a password for the database. There are minimum complexity rules for this password, so make it long-ish (more than 7 characters), with numbers, symbols and both cases of letters.
 2. Go to the storage account you created and copy the first key in the "Access Keys" section.
-3. **It's time!** Run `az deployment group create --name m12deployment --resource-group <resource_group> --template-file template.json --parameters parameters.json --parameters administratorLoginPassword=<db_password> --parameters storageAccountKey=<storage_access_key> --parameters importDatabase=true -c`
+3. **It's time!** Run `az deployment group create --name m12deployment --resource-group <resource_group> --template-file template.json --parameters parameters.json --parameters administratorLoginPassword=<db_password> --parameters storageAccountKey=<storage_access_key> --parameters importDatabase=true -c`, replacing the `<placeholders>` as appropriate.
 4. Confirm the deployment (this step is required by the `-c` parameter).
     * The deployment might take several minutes
 5. Confirm this worked by connecting to your new database from Azure Data studio.
