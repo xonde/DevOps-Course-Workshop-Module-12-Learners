@@ -201,7 +201,7 @@ Since we are only importing a couple of resources we are going to do it manually
 ### 4.1 Create Terraform configuration
 
 Start by adapting the example from [the docs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/sql_database) to match what you see in the Azure portal.
-You'll want an `azurerm_sql_server` and `azurerm_sql_database` resource.
+You'll want an `azurerm_sql_server` and `azurerm_sql_database` resource to your existing config.
 Don't worry about getting every property just right yet, as long as you can run `terraform plan` without errors.
 
 You should see that Terraform wants to create these as new resources when you run `terraform plan`.
