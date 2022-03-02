@@ -223,7 +223,7 @@ We can follow the steps below which are derived from this guide: [https://docs.m
   },
 ```
 
-2. Add the following to the database in the template. This should be a child resource of the database, which is itself a child resource of the SQL Server. Insert it just below the `"type": "databases"` line, but within the same resource - i.e. we'll end up with an entry in the outer `resources` array that also has its own `resources` array.
+2. Add the following to the database in the template. Insert it just below the `"type": "databases"` line, but within the same resource - i.e. this should be a child resource of the database, which is itself a child resource of the SQL Server.
 
 ```json
 "resources": [
