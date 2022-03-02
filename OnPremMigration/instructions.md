@@ -53,7 +53,7 @@ Now we will upload the bacpac file to an Azure storage container ready to restor
 
 Now, we have a `BACPAC` file in an Azure storage account - this is where it needs to be in order for us to restore the database.
 
-### Step 3: Get ARM template
+### Step 3: Get the ARM template
 
 We're ready to bring up our new database. The way we will do this is by provisioning resources in Azure using ARM templates. ARM (Azure Resource Manager) is the deployment and management system that allows you to create and modify resources in Azure, and ARM templates are JSON files which describe the resources you want.
 
@@ -349,7 +349,7 @@ There are more stretch goals below if you would like to keep practising with ARM
 
 Now we have the database working we can adjust our template to create the web app too, and set them up to connect to each other.
 
-### (Stretch) Step 1: App service
+### (Stretch) Step 1: App service template
 
 1. Search for "App Services" in the top search bar and then click "create".
 2. Choose Docker Container on Linux.
