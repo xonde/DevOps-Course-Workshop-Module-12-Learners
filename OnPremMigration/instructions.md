@@ -35,7 +35,7 @@ We will connect to this database using Azure Data Studio and backup the database
    * If you can't see this option, check you installed the dacpac extension above
 3. Follow the steps to create a `.bacpac` backup of the database, and name it "database.bacpac".
    * The operation is "Export the schema and data from a database to the logical .bacpac file format [Export Bacpac]"
-   * This will take a few minutes, you can carry on with step 2 below, but remember to come back and upload it!
+   * This sometimes take a few minutes, you can carry on with step 2 below in the meantime
 
 ### Step 2: Upload the backup to Azure
 
