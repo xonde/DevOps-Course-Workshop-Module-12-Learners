@@ -44,7 +44,7 @@ provider "azurerm" {
 * From a terminal inside the folder, run `terraform init`
 
 Terraform will automatically download the Azure provider and place it inside a new `.terraform` folder in the current directory.
-You should not add the `.terraform` directory to source control, instead commit the `terraform.lock.hcl` which records the exact provider version used.
+You should not add the `.terraform` directory to source control, although you can commit the `terraform.lock.hcl` which records the exact provider version used.
 
 ### Add your Resource Group
 
@@ -244,7 +244,7 @@ resource "azurerm_sql_server" "main" {
   resource_group_name          = data.azurerm_resource_group.main.name
   location                     = data.azurerm_resource_group.main.location
   version                      = "12.0"
-  administrator_login          = "db"
+  administrator_login          = "dbadmin"
   administrator_login_password = var.database_password
 }
 

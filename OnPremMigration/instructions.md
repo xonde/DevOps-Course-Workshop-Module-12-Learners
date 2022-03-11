@@ -49,7 +49,7 @@ Now we will upload the bacpac file to an Azure storage container ready to restor
    * Leave everything on the other tabs on their defaults
 4. Once created, browse to the Account, and select "Containers" in the sidebar.
 5. Create a new container called "bacpac".
-6. Upload the file from Step 1 ("database.bacpac") to the container.
+6. Upload the file from Step 1 (with the name "database.bacpac") to the container.
 
 Now, we have a `BACPAC` file in an Azure storage account - this is where it needs to be in order for us to restore the database.
 
