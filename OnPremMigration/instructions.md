@@ -184,7 +184,7 @@ Let's do this now for each of the SQL Server and App Service resources you'll ne
 1. In the Azure Portal, search for "SQL databases" in the top search bar and then click "create".
 2. Configure the database settings
     1. Select your resource group
-    2. Choose "Create new" for the server (set any value for the username and password you like - we are just here to generate a template).
+    2. Choose "Create new" for the server and choose "Use SQL Authentication" for the Authentication Method (set any value for the username and password you like - we are just here to generate a template).
     3. Hit "Configure database" and select the Basic tier.
 3. Check that you completed the above. Click "Review and create" **but** don't hit create after.
 4. Take a moment to check the details, you should see:
