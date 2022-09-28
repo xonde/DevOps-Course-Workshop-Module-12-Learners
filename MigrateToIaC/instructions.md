@@ -86,6 +86,9 @@ We're going to create a new instance of the App Service Plan and App Service tha
 
 ### App Service Plan (ASP)
 
+Unlike with ARM templates we can't export Terraform from the Azure portal.
+Fortunately it is a little easier to write ourselves.
+To get you started, here is Terraform config for an App Service Plan.  
 Add the following to your `main.tf` file, updating the name as appropriate:
 
 ```terraform
@@ -146,6 +149,8 @@ resource "azurerm_app_service" "main" {
 }
 ```
 
+You could use `=` instead of `:` inside the `app_settings` block, this will work just as well.
+
 </details>
 
 ## Step 3: Variables and secrets
@@ -201,7 +206,7 @@ Since we are only importing a couple of resources we are going to do it manually
 ### 4.1 Create Terraform configuration
 
 Start by adapting the example from [the docs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/sql_database) to match what you see in the Azure portal.
-You'll want an `azurerm_sql_server` and `azurerm_sql_database` resource.
+You'll want to add an `azurerm_sql_server` and `azurerm_sql_database` resource to your existing config.
 Don't worry about getting every property just right yet, as long as you can run `terraform plan` without errors.
 
 You should see that Terraform wants to create these as new resources when you run `terraform plan`.
