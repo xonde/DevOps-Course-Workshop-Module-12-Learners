@@ -294,6 +294,8 @@ The template should already have a couple of resources of type "firewallrules". 
 
 </details>
 
+For this firewall rule to be accepted, we'll also need to enable public network access; change the value of the `PublicNetworkAccess` parameter in `parameters.json` to "Enabled" to ensure this firewall rule can be applied.
+
 ### Step 6: Output connection details
 
 Once we have created the database we need to know how to connect to it.
