@@ -179,7 +179,7 @@ You can reference a variable in Terraform by prefixing its name with `var.`, and
   "CONNECTION_STRING" : "...Password=${var.database_password};..."
 ```
 
-When you run `terraform plan` (or `terraform apply`) Terraform will ask you to give it the database password. Try running an apply with the correct password and make sure there aren't any changes.
+When you run `terraform plan` (or `terraform apply`) Terraform will ask you to give it the database password. Try running an apply with the correct password and make sure there aren't any changes - though Terraform might report it expects to change things because the variable has been marked as sensitive.
 
 ### Tidying up
 
