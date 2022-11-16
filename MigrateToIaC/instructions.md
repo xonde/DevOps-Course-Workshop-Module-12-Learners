@@ -92,17 +92,12 @@ To get you started, here is Terraform config for an App Service Plan.
 Add the following to your `main.tf` file, updating the name as appropriate:
 
 ```terraform
-resource "azurerm_app_service_plan" "main" {
+resource "azurerm_service_plan" "main" {
   name                = "<YourName>-terraformed-asp"
-  location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
-  kind                = "Linux"
-  reserved            = true
-
-  sku {
-    tier = "Basic"
-    size = "B1"
-  }
+  location            = data.azurerm_resource_group.main.location
+  os_type             = "Linux"
+  sku_name            = "B1"
 }
 ```
 
@@ -113,7 +108,7 @@ Try running `terraform apply` and find your newly-created App Service Plan in Az
 
 ### App Service
 
-Have a go at adding a new resource to `main.tf` for the App Service itself using Terraform's documentation: <https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_service>
+Have a go at adding a new resource to `main.tf` for the App Service itself using Terraform's documentation: <https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app>
 
 You'll need to have a look at the configuration of the existing App Service in Azure in order to make sure it is set up the same. Once you're happy with it run `terraform plan` then `terraform apply`, find it in the Azure portal and check if it works like the existing one.
 
@@ -130,15 +125,17 @@ Note that App Service names need to be globally unique.
 <details><summary>Answer</summary>
 
 ```terraform
-resource "azurerm_app_service" "main" {
+resource "azurerm_linux_web_app" "main" {
   name                = "<YourName>-terraformed-app-service"
-  location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
-  app_service_plan_id = azurerm_app_service_plan.main.id
+  location            = data.azurerm_resource_group.main.location
+  app_service_plan_id = azurerm_service_plan.main.id
 
   site_config {
-    app_command_line = ""
-    linux_fx_version = "DOCKER|corndelldevopscourse/mod12app:latest"
+    application_stack {
+      docker_image     = "corndelldevopscourse/mod12app"
+      docker_image_tag = "latest"
+    }
   }
 
   app_settings = {
