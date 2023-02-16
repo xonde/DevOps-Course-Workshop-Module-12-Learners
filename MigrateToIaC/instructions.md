@@ -117,7 +117,6 @@ Hints:
 * The existing App Service is running a Docker image. If you navigate to the App Service (not the App Service Plan) in the Azure portal and then click on "Deployment Center" you'll see the image name.
 * The app_settings block will need to include the connection string for the database, which you can get from the "Configuration" tab in the Azure portal. This includes the database password, which we don't want in source control, but don't worry about this for now, we'll look at variables and secrets next.
 * Set the `DEPLOYMENT_METHOD` environment variable (`app_setting`) to e.g. `"Terraform"`.
-* Ignore the `connection_string` block in the Terraform documentation example. We will pass our connection string in via the `app_settings` block.
 * You can use the `terraform fmt` command to format your `main.tf` file and `terraform validate` to check the configuration without taking the time to do a plan.
 
 Note that App Service names need to be globally unique.
