@@ -31,7 +31,7 @@ terraform {
   required_providers {
     azurerm = {
       source = "hashicorp/azurerm"
-      version = "~>3.0"
+      version = ">=3.43.0"
     }
   }
 }
@@ -201,8 +201,8 @@ Since we are only importing a couple of resources we are going to do it manually
 
 ### 4.1 Create Terraform configuration
 
-Start by adapting the example from [the docs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/sql_database) to match what you see in the Azure portal.
-You'll want to add an `azurerm_sql_server` and `azurerm_sql_database` resource to your existing config.
+Start by adapting the example from [the docs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mssql_database) to match what you see in the Azure portal.
+You'll want to add an `azurerm_mssql_server` and `azurerm_mssql_database` resource to your existing config.
 Don't worry about getting every property just right yet, as long as you can run `terraform plan` without errors.
 
 You should see that Terraform wants to create these as new resources when you run `terraform plan`.
@@ -216,9 +216,9 @@ Import the existing server and database into Terraform, server first:
   * browse to it in the Azure portal
   * hit JSON view in the top right
   * press copy next to the "Resource Id"
-* Run `terraform import azurerm_sql_server.main <id from above>` (assuming you called the resource "main")
+* Run `terraform import azurerm_mssql_server.main <id from above>` (assuming you called the resource "main")
 
-Then do the same for the database, using `azurerm_sql_database` in the import command.
+Then do the same for the database, using `azurerm_mssql_database` in the import command.
 
 > MinGW (Git Bash for Windows) users may need to disable path expansion to avoid the id being interpreted as a path. Run `export MSYS_NO_PATHCONV=1` in your terminal and then try the import again.
 
@@ -240,7 +240,7 @@ Your Terraform config should look like this:
 
 ```terraform
 
-resource "azurerm_sql_server" "main" {
+resource "azurerm_mssql_server" "main" {
   name                         = "<your-name>-non-iac-sqlserver"
   resource_group_name          = data.azurerm_resource_group.main.name
   location                     = data.azurerm_resource_group.main.location
@@ -249,12 +249,10 @@ resource "azurerm_sql_server" "main" {
   administrator_login_password = var.database_password
 }
 
-resource "azurerm_sql_database" "main" {
+resource "azurerm_mssql_database" "main" {
   name                = "<your-name>-non-iac-db"
-  resource_group_name = data.azurerm_resource_group.main.name
-  location            = data.azurerm_resource_group.main.location
-  server_name         = azurerm_sql_server.main.name
-  edition             = "Basic"
+  server_id           = data.azurerm_mssql_server.main.id
+  sku_name            = "Basic"
 }
 ```
 
@@ -281,7 +279,7 @@ lifecycle {
 
 If you run `terraform plan` now, after changing the database name, Terraform will error rather than offering to delete your database.
 
-> If you remove the `prevent_destroy` directive from the configuration you'll be able to delete the resource again. That means if you remove the `azurerm_sql_database` resource completely Terraform will still try and destroy it.
+> If you remove the `prevent_destroy` directive from the configuration you'll be able to delete the resource again. That means if you remove the `azurerm_mssql_database` resource completely Terraform will still try and destroy it.
 
 ### 4.5 Update connection string
 
@@ -307,7 +305,7 @@ Let's try it out. Add a new file called `outputs.tf` (this file name is also jus
 
 ```terraform
 output "webapp_hostname" {
-  value = azurerm_app_service.main.default_site_hostname
+  value = azurerm_linux_web_app.main.default_site_hostname
 }
 ```
 
@@ -355,4 +353,4 @@ Have a read of the documentation and create a new Terraform workspace.
 
 Bring up another copy of your infrastructure with a different prefix, in this new workspace.
 
-You'll need to find a way to migrate the data from the existing database across, or recreate it in the new database (it's only one table/row), as well as setting up a `azurerm_sql_firewall_rule` so that the App Service can talk to the database.
+You'll need to find a way to migrate the data from the existing database across, or recreate it in the new database (it's only one table/row), as well as setting up a `azurerm_mssql_firewall_rule` so that the App Service can talk to the database.
