@@ -356,7 +356,7 @@ Now we have the database working we can adjust our template to create the web ap
 1. Search for "App Services" in the top search bar and then click "create".
 2. Choose Docker Container on Linux.
 3. Create a new App Service Plan (change size to the Dev B1 Tier).
-4. On the Docker tab choose Image Source "Docker Hub" and Image and Tag "corndelldevopscourse/mod12app:latest".
+4. On the Docker tab choose Image Source "Docker Hub" and Image and Tag "corndeldevopscourse/mod12app:latest".
 5. Click "Review and create".
 6. Take a moment to check the details, you should see:
     * Under "Details", a reference to the Docker container

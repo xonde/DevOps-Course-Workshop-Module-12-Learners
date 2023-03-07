@@ -132,7 +132,7 @@ resource "azurerm_linux_web_app" "main" {
 
   site_config {
     application_stack {
-      docker_image     = "corndelldevopscourse/mod12app"
+      docker_image     = "corndeldevopscourse/mod12app"
       docker_image_tag = "latest"
     }
   }
