@@ -285,7 +285,7 @@ If you run `terraform plan` now, after changing the database name, Terraform wil
 
 Update the `CONNECTION_STRING` App Setting in the App Service Terraform configuration to reference your Database resources rather than being hard coded.
 
-> Terraform resources export attributes that could be helpful here, for example `azurerm_sql_server` exports the [`fully_qualified_domain_name`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/sql_server#fully_qualified_domain_name) attribute.
+> Terraform resources export attributes that could be helpful here, for example `azurerm_mssql_server` exports the [`fully_qualified_domain_name`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mssql_server#fully_qualified_domain_name) attribute.
 
 ## Next steps
 
